@@ -16,7 +16,7 @@ describe('KPI Dashboard', () => {
       cy.intercept(`GET`, `/api/metrics?metric=${metric.toLowerCase()}`, (req) => {
         req.headers[`Cache-Control`] = `no-cache`;
       }).as(metric.toLowerCase())
-      cy.get('#metric').select(metric)
+      cy.selectMetric('#metric', metric)
       cy.wait(`@${metric.toLowerCase()}`).then(({ response }) => {
         expect(response).to.exist;
         expect(response?.statusCode).to.eq(200);
@@ -39,7 +39,7 @@ describe('KPI Dashboard', () => {
     }).as('upload-fail')
     cy.intercept(`GET`, `/api/metrics?metric=upload`).as('upload-retried')
 
-    cy.get('#metric').select('Upload')
+    cy.selectMetric('#metric', 'Upload')
 
     cy.wait('@upload-fail').then(({ response }) => {
       expect(response?.statusCode).to.eq(500);
