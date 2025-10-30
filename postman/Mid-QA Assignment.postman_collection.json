@@ -1,0 +1,245 @@
+{
+	"info": {
+		"_postman_id": "8efba5b9-b1ad-4ba9-bc1d-385af1b99b93",
+		"name": "Mid-QA Assignment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49660363",
+		"_collection_link": "https://kabaggie-3479921.postman.co/workspace/kb's-Workspace~2be6cd13-f240-4745-88fe-b41d2622cb2b/collection/49660363-8efba5b9-b1ad-4ba9-bc1d-385af1b99b93?action=share&source=collection_link&creator=49660363"
+	},
+	"item": [
+		{
+			"name": "api/metrics?metric={{metric}}",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"expect response to have property points\", () => {",
+							"pm.expect(response).to.have.property('points')",
+							"}) ",
+							"",
+							"pm.test(\"expect response to be a non-empty array\", () => {",
+							"    pm.expect(response.points).to.be.an('array').that.is.not.empty",
+							"}) ",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5174/api/metrics?metric={{metric}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5174",
+					"path": [
+						"api",
+						"metrics"
+					],
+					"query": [
+						{
+							"key": "metric",
+							"value": "{{metric}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/metrics?metric=fake",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 404\", () => {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"expect response to have property points\", () => {",
+							"pm.expect(response).to.not.have.property('points')",
+							"}) ",
+							"",
+							"pm.test(\"expect response to be a non-empty array\", () => {",
+							"    pm.expect(response.points).to.not.be.an('array').that.is.not.empty",
+							"}) ",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5174/api/metrics?metric=fake",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5174",
+					"path": [
+						"api",
+						"metrics"
+					],
+					"query": [
+						{
+							"key": "metric",
+							"value": "fake"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GraphQL {{metric}}",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"expect data points to be an array\", () => {",
+							"    pm.expect(response.data.kpi).to.be.an('array')",
+							"}) ",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"query\":\"query($m:String!){ kpi(metric:$m){ t v } }\",\"variables\":{\"m\":\"{{metric}}\"}}"
+				},
+				"url": {
+					"raw": "http://localhost:5174/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5174",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GraphQL fake",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 404\", () => {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"query\":\"query($m:String!){ kpi(metric:$m){ t v } }\",\"variables\":{\"m\":\"fake\"}}"
+				},
+				"url": {
+					"raw": "http://localhost:5174/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5174",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "matric",
+			"value": ""
+		},
+		{
+			"key": "metric",
+			"value": ""
+		}
+	]
+}
