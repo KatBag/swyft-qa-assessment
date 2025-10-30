@@ -7,7 +7,7 @@ describe('KPI Dashboard', () => {
     cy.get('canvas').should('be.visible')
   })
 
-  it('renders and switches metric', () => {
+  it('TC1 renders and switches metric', () => {
 
     const metrics: string[] = ['Latency', 'Download', 'Upload']
     let dataPoints: any = [];
@@ -29,7 +29,7 @@ describe('KPI Dashboard', () => {
 
   })
 
-  it('retries upload metric REST request after fail', () => {
+  it('TC2 retries upload metric REST request after fail', () => {
 
     cy.intercept(`GET`, `/api/metrics?metric=upload`, (req) => {
       req.headers[`Cache-Control`] = `no-cache`;
@@ -50,18 +50,15 @@ describe('KPI Dashboard', () => {
     })
   })
 
-  it('should not execute an HTML script', () => {
+  it('TC3 should not execute an HTML script', () => {
     cy.intercept('GET', '/api/metrics?metric=upload', {
-      statusCode: 200,
       body: {
         description: '<img src=x onerror=alert("XSS")>',
         points: [{ v: 1 }, { v: 2 }],
       },
     }).as('get-metric');
 
-    cy.visit('/');
-
-    cy.get('#metric').select('Upload')
+    cy.selectMetric('#metric', 'Upload')
     cy.wait('@get-metric');
 
     cy.get('#desc')
