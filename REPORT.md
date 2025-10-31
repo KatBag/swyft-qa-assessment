@@ -33,3 +33,8 @@ I've never done that and to be honest I would generate most of it with some AI t
 The error occurs at odd minutes for metric 'upload'. To reproduce it, user has to select that metric from the dropdown list 'Metric' during an odd minute.It's caused by an intentional bug in code.
 
 Added Postman collection and a file with positive cases which can be used for iteration in a run in Postman.
+
+#### Lighthouse
+
+I haven't worked with Lighthouse before. I've attached a report to the repository (lighthouse_report.html). It's done in the desktop mode. Regarding possible improvements, in line with the suggestions in the report an attribute [lang] could be added to the <html> element in order to enable recognizing the used langauge. 
+Also, actually contrary to the report I would discuss decreasing caching time from 7 days to for example 1 day maybe - of course it should be discussed with a PO (maybe 7 days is OK for this type of data). It would make loading the page a bit slower every day but a user would get fresh data.
